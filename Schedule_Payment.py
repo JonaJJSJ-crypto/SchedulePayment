@@ -11,7 +11,6 @@ RegularDays = ['MO','TU','WE','TH','FR']
 WeekEndDays = ['SA','SU']
 #List of tuple consist of (final_hour_of_the_schedule,payment_of_the_schedule)
 Minutes = [(540,25),(1080,15),(1440,20)]
-#Extra fee that is granted for working during weekends
 WeekEndExtraFee = 5
 
 #Transform time (hh:mm) in 24h format to Minutes
