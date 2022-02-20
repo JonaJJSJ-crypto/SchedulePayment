@@ -50,21 +50,22 @@ The amount to pay ASTRID is: 85.0 USD.
 ```
 ## Aditional features
 
-- You can enter multiple Working hours per day by using the same day abbreviation at the beggining of each work hour:
+- You can enter multiple Working hours per day by using the same day abbreviation at the beggining of each worked hours:
 ```
 RENE=MO01:00-03:00,MO14:00-16:00
 ```
-- The order of the start and end of the work hours matters, if the end work hour is less than the Start work hour you will get negative income. Negative hours mean negative money
+- The order of the start and end of the work hours matters. Be careful taking 00:00 as an starting Hour since it refers to 24:00, instead use 00:01 as the first hour of the day.
 - The order of the days and schedule does not matter
 ```
 RENE=MO01:00-03:00,TU14:00-16:00
 #Gives the same result as:
 RENE=TU14:00-16:00,MO01:00-03:00
 ```
--On regular days the pay per hour depends on the time of the day:
+- On regular days the pay per hour depends on the time of the day:
    - 00:01-09:00 25 USD
    - 09:01-18:00 15 USD
    - 18:01-00:00 20 USD
+- If there is a miss imput in the Schedule.txt file the code will notify the possible incorrect imput error, with an example of how to properly write that entry. Check how to properly write the Schedule.txt file in the previous section, or use the Schedule_backup.txt as a reference.
 
 Thanks for using this program, feel free to report any issue in the issue section of the github repository: https://github.com/JonaJJSJ-crypto/SchedulePayment/issues
 
