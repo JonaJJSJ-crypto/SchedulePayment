@@ -21,58 +21,49 @@ WeekEndExtraFee = 5
 def MinuteFormat(Hour_Format):
     if Hour_Format == "00:00":
         return 1440
-    else:    
+    else:
         Hour=int(Hour_Format[0:2])
         Min=int(Hour_Format[3:5])
         return Min + Hour*60
 
+#Validate that working Hours
+def ValidHours(TimeBegin,TimeEnd):
+    if TimeEnd-TimeBegin < 0:
+        
+
 #Recieves a string of the form DDhh:mm-hh:mm & a boolean that confirms if is WeekEnd schedule
 #Returns The total payment from the working schedule
 def payment(myTimes,IsWeekend):
-    #Safe the WeekEndExtraFee as a variable
     WEFee = WeekEndExtraFee
-    #Change WeekEndExtraFee to 0 if is not weekend
     if not IsWeekend:
         WEFee=0
-    #Set Entry hour
     myTimeBegin=myTimes[0:5]
-    #print(myTimeBegin)
-    #Set Exit hour
     myTimeEnd=myTimes[6:11]
-    #print(myTimeEnd)
-    # Change Entry and Exit hour to int Minute format
+    # Change working hours to int Minute format
     myTimeBegin= MinuteFormat(myTimeBegin)
     myTimeEnd= MinuteFormat(myTimeEnd)
-    #Calculate total worked time
+    #Total worked time
     TMinutes=myTimeEnd-myTimeBegin
-    # Prints the Schedule that will be use to calculate the payment
+    # Print the Schedule that will be use to calculate the payment
     ###print("Begin Time: ", myTimeBegin)
     ###print("End Time: ",myTimeEnd)
     ###print("Total Hours: ",TMinutes)
 
-    #Internal Varible that holds the payment
+    #Internal Variable that holds the payment
     pay=0;
 
-    #search for (Schedule,Payment) that correspond to the Schedule
     for x in Minutes:
-        #Searches for the schedule in which the Work started
         if myTimeBegin<=x[0]:
-            #Seaches if the worked started and ended in the same schedule
-            #and calculates the payment and exits the calculation
+            #Work schedule starts and finishes in the same schedule
             if myTimeBegin+TMinutes<=x[0]:
                 pay+= (x[1]+WEFee)*TMinutes/60
                 TMinutes=0;
                 myTimeBegin=1441;
-                #print("El pago es ",pay,' ',x)
-            #If the worked didnt end in the same schedule calculates the payment
-            #for the initial schedule, and Sets begin time ant total Hours
-            #to the following schedule to allow a new calculation
+            #When work hours overlap in diferent schedules prepare for next schedule
             else:
                 pay+= (x[1]+WEFee)*(x[0]-myTimeBegin)/60
-                #print("El pago es ",pay,' ',x," Overlay ")
                 myTimeBegin=x[0]+1
                 TMinutes=myTimeEnd-x[0]
-    #Prints the Payment calculation for the Schedule
     print("     Pay for the Schedule: {}".format(pay))
 
     return pay
@@ -81,18 +72,13 @@ def payment(myTimes,IsWeekend):
 for x in myFile:
     #Saves the entry for manipulation
     mySchedule = x
-    #print(mySchedule)
-    #Stores name
     myName = mySchedule[0:mySchedule.find('=')]
     print(myName)
-    #Re-assign the the entry on to schedule
     mySchedule = mySchedule[mySchedule.find('=')+1:len(mySchedule)]
-    #print(mySchedule)
 
     #internal variable to store payment
     Total_payment=0
 
-    #Searched in the schedule for regular days
     for y in RegularDays:
         #Search in the entry for multiple appearances of the same day
         while mySchedule.find(y) != -1:
@@ -100,13 +86,10 @@ for x in myFile:
             myRTimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
             if mySchedule.find(y) != -1:
                 print(y,' ',myRTimes,end='')
-                #Ask payment() function to calculate the the payment for the given Day and time
                 Total_payment += payment(myRTimes,False)
-                #Re-stores the Schedule entry ommiting the analized day and Schedule
-                #This allows multpiple entries of time in the same day
+                #Re-stores the Schedule entry ommiting the analized day and workhours
                 mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
 
-    #Searched in the schedule for Weekend days
     for y in WeekEndDays:
         #Search in the entry for multiple appearances of the same day
         while mySchedule.find(y) != -1:
@@ -114,7 +97,6 @@ for x in myFile:
             myWETimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
             if mySchedule.find(y) != -1:
                 print(y,' ',myWETimes,end='')
-                #Ask payment() function to calculate the the payment for the given Day and time
                 Total_payment += payment(myWETimes,True)
                 #Re-stores the Schedule entry ommiting the analized day and Schedule
                 #This allows multpiple entries of time in the same day
