@@ -27,9 +27,9 @@ def MinuteFormat(Hour_Format):
         return Min + Hour*60
 
 #Validate that working Hours
-def ValidHours(TimeBegin,TimeEnd):
-    if TimeEnd-TimeBegin < 0:
-        
+#def ValidHours(TimeBegin,TimeEnd):
+    #if TimeEnd-TimeBegin < 0:
+
 
 #Recieves a string of the form DDhh:mm-hh:mm & a boolean that confirms if is WeekEnd schedule
 #Returns The total payment from the working schedule
