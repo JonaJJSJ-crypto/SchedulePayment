@@ -1,7 +1,8 @@
-    #Implementation for a payment Based on schedule
-    #This program accepts a .txt file with the next Format
-    #Author: Jonathan Sánchez
-    #Github Repo: JonaJJSJ-crypto
+#Implementation for a payment Based on schedule
+#This program accepts a .txt file with the next Format:
+#NAME=DDhh:mm-hh:mm,DDhh:mm-hh:mm
+#Author: Jonathan Sánchez
+#Github Repo: JonaJJSJ-crypto/SchedulePayment
 
 #Reading file with names and Schedules
 #Example of a line in the file: ASTRID=MO10:00-12:00,TH12:00-14:00,SU20:00-21:00
@@ -18,9 +19,12 @@ WeekEndExtraFee = 5
 
 #Recieves a string of the form (hh:mm) in 24 hours format and returns the total of minutes since (00:00)
 def MinuteFormat(Hour_Format):
-    Hour=int(Hour_Format[0:2])
-    Min=int(Hour_Format[3:5])
-    return Min + Hour*60
+    if Hour_Format == "00:00":
+        return 1440
+    else:    
+        Hour=int(Hour_Format[0:2])
+        Min=int(Hour_Format[3:5])
+        return Min + Hour*60
 
 #Recieves a string of the form DDhh:mm-hh:mm & a boolean that confirms if is WeekEnd schedule
 #Returns The total payment from the working schedule
@@ -69,7 +73,7 @@ def payment(myTimes,IsWeekend):
                 myTimeBegin=x[0]+1
                 TMinutes=myTimeEnd-x[0]
     #Prints the Payment calculation for the Schedule
-    print("     Pay for the Schedule: ",pay)
+    print("     Pay for the Schedule: {}".format(pay))
 
     return pay
 
@@ -116,4 +120,4 @@ for x in myFile:
                 #This allows multpiple entries of time in the same day
                 mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
 
-    print("The amount to pay ",myName," is: ",Total_payment," USD.\n\n")
+    print("The amount to pay {}".format(myName),"is: {}".format(Total_payment),"USD.\n\n")
