@@ -32,7 +32,7 @@ You can use the Schedule.txt a an starting point, feel free to edit this file. T
 python3 Schedule_Payment.py
 ```
 The output of this program should look something like this:
-```bash
+```
 RENE
 MO   10:00-12:00     Pay for the Schedule: 30.0
 TU   10:00-12:00     Pay for the Schedule: 30.0
@@ -48,6 +48,23 @@ TH   12:00-14:00     Pay for the Schedule: 30.0
 SU   20:00-21:00     Pay for the Schedule: 25.0
 The amount to pay ASTRID is: 85.0 USD.
 ```
+## Aditional features
+
+- You can enter multiple Working hours per day by using the same day abbreviation at the beggining of each work hour:
+```
+RENE=MO01:00-03:00,MO14:00-16:00
+```
+- The order of the start and end of the work hours matters, if the end work hour is less than the Start work hour you will get negative income. Negative hours mean negative money
+- The order of the days and schedule does not matter
+```
+RENE=MO01:00-03:00,TU14:00-16:00
+#Gives the same result as:
+RENE=TU14:00-16:00,MO01:00-03:00
+```
+-On regular days the pay per hour depends on the time of the day:
+   - 00:01-09:00 25 USD
+   - 09:01-18:00 15 USD
+   - 18:01-00:00 20 USD
 
 Thanks for using this program, feel free to report any issue in the issue section of the github repository: https://github.com/JonaJJSJ-crypto/SchedulePayment/issues
 
