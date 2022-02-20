@@ -10,18 +10,10 @@ myFile = open("Schedule.txt","r")
 #Setting Days Type
 RegularDays = ['MO','TU','WE','TH','FR']
 WeekEndDays = ['SA','SU']
-<<<<<<< Updated upstream
-#Hours
-Minutes = [540,1080,1440]
-
-#MinTuple = [(540,25),(1080),(1440)]
-
-=======
 #List of tuple consist of (final_hour_of_the_schedule,payment_of_the_schedule)
 #Final_hour_of_the_schedule is the total of minutes of that hours
 Minutes = [(540,25),(1080,15),(1440,20)]
 #Extra fee that is granted for working during weekends
->>>>>>> Stashed changes
 WeekEndExtraFee = 5
 
 #Recieves a string of the form (hh:mm) in 24 hours format and returns the total of minutes since (00:00)
@@ -98,15 +90,17 @@ for x in myFile:
 
     #Searched in the schedule for regular days
     for y in RegularDays:
-        #Stores the Day and time in the format DDhh:mm
-        myRTimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
-        if mySchedule.find(y) != -1:
-            print(y,' ',myRTimes,end='')
-            #Ask payment() function to calculate the the payment for the given Day and time
-            Total_payment += payment(myRTimes,False)
-            #Re-stores the Schedule entry ommiting the analized day and Schedule
-            #This allows multpiple entries of time in the same day
-            mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
+        #Search in the entry for multiple appearances of the same day
+        while mySchedule.find(y) != -1:
+            #Stores the Day and time in the format DDhh:mm
+            myRTimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
+            if mySchedule.find(y) != -1:
+                print(y,' ',myRTimes,end='')
+                #Ask payment() function to calculate the the payment for the given Day and time
+                Total_payment += payment(myRTimes,False)
+                #Re-stores the Schedule entry ommiting the analized day and Schedule
+                #This allows multpiple entries of time in the same day
+                mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
 
     #Searched in the schedule for Weekend days
     for y in WeekEndDays:
