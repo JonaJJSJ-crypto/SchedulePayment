@@ -12,7 +12,7 @@ WeekEndDays = ['SA','SU']
 #Hours
 Minutes = [540,1080,1440]
 
-MinTuple = [(540,25),(1080),(1440)]
+#MinTuple = [(540,25),(1080),(1440)]
 
 WeekEndExtraFee = 5
 
