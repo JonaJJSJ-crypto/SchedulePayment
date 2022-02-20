@@ -28,7 +28,7 @@ def MinuteFormat(Hour_Format):
             return Min + Hour*60
 
     except ValueError:
-        print("\n !!!Error: incorrect hour_format: {}".format(Hour_Format),"!!! Correct format: hh:mm")
+        print("\n !!!Error: incorrect hour_format: {}".format(Hour_Format),"!!!Correct format: hh:mm\n")
 
 
 #Given working hours (hh:mm-hh:mm) & IsWeekEnd flag, returns payment
@@ -66,39 +66,43 @@ def payment(myTimes,IsWeekend):
         return pay
 
     except TypeError:
-        print("\n !!!Error: incorrect working hours format: {}".format(myTimes),"!!! Correct format: hh:mm-hh:mm")
+        print("\n !!!Error: incorrect working hours format: {}".format(myTimes),"!!!Correct format: hh:mm-hh:mm\n")
 
-#Calculate payment for each worked in the file
+#Calculate payment for each worker in the file
 for x in myFile:
     mySchedule = x
     myName = mySchedule[0:mySchedule.find('=')]
-    print(myName)
-    mySchedule = mySchedule[mySchedule.find('=')+1:len(mySchedule)]
+    if mySchedule.find('=') == -1:
+        print(" !!!Error: incorrect name format in: {}".format(mySchedule),"!!!Correct format: NAME=DDhh:mm-hh:mm,DDhh:mm-hh:mm\n")
+        continue
+    else:
+        print(myName)
+        mySchedule = mySchedule[mySchedule.find('=')+1:len(mySchedule)]
 
-    #internal variable to store payment
-    Total_payment=0
-    try:
-        for y in RegularDays:
-            #Search in the entry for multiple appearances of the same day
-            while mySchedule.find(y) != -1:
-                myTimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
-                if mySchedule.find(y) != -1:
-                    print(y,' ',myTimes,end='')
-                    Total_payment += payment(myTimes,False)
-                    mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
-        for y in WeekEndDays:
-            #Search in the entry for multiple appearances of the same day
-            while mySchedule.find(y) != -1:
-                myTimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
-                if mySchedule.find(y) != -1:
-                    print(y,' ',myTimes,end='')
-                    Total_payment += payment(myTimes,True)
-                    mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
-        if len(mySchedule) != 0:
-            print("\n !!!Error: Working day not found in: {}".format(mySchedule),"!!! Correct days: MO,TU,WE,TH,FR,SA,SU")
+        #internal variable to store payment
+        Total_payment=0
+        try:
+            for y in RegularDays:
+                #Search in the entry for multiple appearances of the same day
+                while mySchedule.find(y) != -1:
+                    myTimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
+                    if mySchedule.find(y) != -1:
+                        print(y,' ',myTimes,end='')
+                        Total_payment += payment(myTimes,False)
+                        mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
+            for y in WeekEndDays:
+                #Search in the entry for multiple appearances of the same day
+                while mySchedule.find(y) != -1:
+                    myTimes = mySchedule[mySchedule.find(y)+2:mySchedule.find(y)+13]
+                    if mySchedule.find(y) != -1:
+                        print(y,' ',myTimes,end='')
+                        Total_payment += payment(myTimes,True)
+                        mySchedule = mySchedule[0:mySchedule.find(y)]+mySchedule[mySchedule.find(y)+14:len(mySchedule)]
+            if len(mySchedule) != 0:
+                print("\n !!!Error: Working day not found in: {}".format(mySchedule),"!!!Correct days: MO,TU,WE,TH,FR,SA,SU\n")
 
-    except TypeError:
-        print("\n !!!Error: incorrect schedule format: {}".format(mySchedule),"!!! Correct format: DDhh:mm-hh:mm")
+        except TypeError:
+            print("\n !!!Error: incorrect schedule format: {}".format(mySchedule),"!!!Correct format: DDhh:mm-hh:mm\n")
 
 
-    print("The amount to pay {}".format(myName),"is: {}".format(round(Total_payment)),"USD.\n\n")
+        print("The amount to pay {}".format(myName),"is: {}".format(round(Total_payment)),"USD.\n\n")
